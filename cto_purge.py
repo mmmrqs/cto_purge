@@ -38,7 +38,7 @@ bl_info = {"name": "CTO Purge",
 import bpy
 
 class CTO_OT_Purge(bpy.types.Operator):
-    """ This is a woraround for this issue
+    """ This is a workaround for this issue:
         https://blender.stackexchange.com/questions/136019/blender-2-8-api-how-to-get-a-list-of-custom-transform-orientations/196080#196080
     """    
     bl_idname = "object.cto_purge"
