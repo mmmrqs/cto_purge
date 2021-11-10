@@ -6,3 +6,6 @@ This add-on adds a new button to Blender's Transformation Orientation panel whic
 ## Installation
 First get the addon by clicking the green "Code" button (top right of files list above) and select the "**Download ZIP**" option, then use Blender's own "Install..." (button) option after navigating to Blender's Main Menu --> Edit --> Preferences... --> Add-ons.
 
+## Acknowledge
+This add-on was based on the original script by 'iyadahmed' **Iyad Ahmed**
+https://gist.github.com/iyadahmed/e2d646c522361880af40c0369fb04712
