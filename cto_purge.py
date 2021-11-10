@@ -18,11 +18,11 @@
 
 # --- ### Header
 bl_info = {"name": "CTO Purge",
-           "description": "Purge all custom transformation orientations",
-           "author": "Marcelo M. Marques (script by iyadahmed)",
+           "description": "Purge all custom transform orientations",
+           "author": "Marcelo M. Marques (based on script by 'iyadahmed' Iyad Ahmed)",
            "version": (1, 0, 0),
            "blender": (2, 80, 75),
-           "location": "View3D > Transformation orientation panel",
+           "location": "View3D > Transform Orientations panel",
            "support": "COMMUNITY",
            "category": "3D View",
            "doc_url": "https://github.com/mmmrqs/cto_purge",
@@ -38,35 +38,56 @@ bl_info = {"name": "CTO Purge",
 import bpy
 
 class CTO_OT_Purge(bpy.types.Operator):
+    """ This is a woraround for this issue
+        https://blender.stackexchange.com/questions/136019/blender-2-8-api-how-to-get-a-list-of-custom-transform-orientations/196080#196080
+    """    
     bl_idname = "object.cto_purge"
     bl_label = "Purge Custom Orientations  "
-    bl_description = "Purge all custom transformation orientations"
+    bl_description = "Purge all custom transform orientations"
     bl_options = {"REGISTER"}
 
+
     def execute(self, context):
+        # Try to set transform orientation and catch error message
         try:
             bpy.context.scene.transform_orientation_slots[0].type = ""
         except Exception as inst:
-            transforms = str(inst)[str(inst).find("in (")+4:-1]
-            transform_list = transforms.split(", ")
-            for type in transform_list[6:]:
+            # Extract a list of transform orientations from error message
+            transforms = str(inst).split("in")[1][3:-2].replace("', '", " ").split()  
+            # Exclude first 6 "default" transform orientations
+            for type in transforms[6:]:
                 try:
-                    bpy.context.scene.transform_orientation_slots[0].type = type[1:-1]
+                    # Try to delete each custom transform orientation
+                    bpy.context.scene.transform_orientation_slots[0].type = type
                     bpy.ops.transform.delete_orientation()
                 except Exception as e:
                     pass
         return {'FINISHED'}
 
 
+class CTO_OT_Space(bpy.types.Operator):
+    bl_idname = "object.cto_space"
+    bl_label = ""
+    bl_description = "[spacer]"
+    bl_options = {"REGISTER"}
+
+    @classmethod
+    def poll(cls, context):
+        return False
+        
+    def execute(self, context):
+        return {'FINISHED'}
+
+
 def extend_transfo_pop_up(self, context):
     layout = self.layout
-    row = layout.row()
-    row.operator(CTO_OT_Purge.bl_idname, text="Purge Custom Orientations  ", icon='TRASH')
-    row.separator()
-    row.separator()
+    row = layout.row(align=False)
+    row.operator(CTO_OT_Purge.bl_idname, icon='TRASH')
+    row.operator(CTO_OT_Space.bl_idname, icon='BLANK1', emboss=False)
 
 
 def register():
+    bpy.utils.register_class(CTO_OT_Space)
     bpy.utils.register_class(CTO_OT_Purge)
     bpy.types.VIEW3D_PT_transform_orientations.append(extend_transfo_pop_up)
 
@@ -74,7 +95,9 @@ def register():
 def unregister():
     bpy.types.VIEW3D_PT_transform_orientations.remove(extend_transfo_pop_up)
     bpy.utils.unregister_class(CTO_OT_Purge)
+    bpy.utils.unregister_class(CTO_OT_Space)
 
 
 if __name__ == '__main__':
     register()
+

@@ -1,5 +1,5 @@
 # CTO Purge
-This add-on adds a new button to Blender's Transformation Orientation panel which empowers the user to purge all of his/her custom transformation orientations with one button click.
+This add-on adds a new button to Blender's Transform Orientation panel which empowers the user to purge all of her/his custom transform orientations with one button click.
 
 ![CTO Purge](https://github.com/mmmrqs/media/blob/main/cto_purge.png)
 
