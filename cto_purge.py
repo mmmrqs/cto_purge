@@ -20,7 +20,7 @@
 bl_info = {"name": "CTO Purge",
            "description": "Purge all custom transform orientations",
            "author": "Marcelo M. Marques (based on script by 'iyadahmed' Iyad Ahmed)",
-           "version": (1, 0, 0),
+           "version": (1, 0, 1),
            "blender": (2, 80, 75),
            "location": "View3D > Transform Orientations panel",
            "support": "COMMUNITY",
@@ -31,6 +31,9 @@ bl_info = {"name": "CTO Purge",
 
 # --- ### Change log
 
+# v1.0.1 (11.11.2021) - by Marcelo M. Marques
+# Chang: just minor clean up
+
 # v1.0.0 (11.10.2021) - by Marcelo M. Marques
 # Added: initial creation
 
@@ -40,7 +43,7 @@ import bpy
 class CTO_OT_Purge(bpy.types.Operator):
     """ This is a workaround for this issue:
         https://blender.stackexchange.com/questions/136019/blender-2-8-api-how-to-get-a-list-of-custom-transform-orientations/196080#196080
-    """    
+    """
     bl_idname = "object.cto_purge"
     bl_label = "Purge Custom Orientations  "
     bl_description = "Purge all custom transform orientations"
@@ -53,7 +56,7 @@ class CTO_OT_Purge(bpy.types.Operator):
             bpy.context.scene.transform_orientation_slots[0].type = ""
         except Exception as inst:
             # Extract a list of transform orientations from error message
-            transforms = str(inst).split("in")[1][3:-2].replace("', '", " ").split()  
+            transforms = str(inst).split("in")[1][3:-2].replace("', '", " ").split()
             # Exclude first 6 "default" transform orientations
             for type in transforms[6:]:
                 try:
@@ -65,10 +68,10 @@ class CTO_OT_Purge(bpy.types.Operator):
         return {'FINISHED'}
 
 
-class CTO_OT_Space(bpy.types.Operator):
-    bl_idname = "object.cto_space"
+class CTO_OT_Dummy(bpy.types.Operator):
+    bl_idname = "object.cto_dummy"
     bl_label = ""
-    bl_description = "[spacer]"
+    bl_description = "There is nothing here"
     bl_options = {"REGISTER"}
 
     @classmethod
@@ -83,11 +86,11 @@ def extend_transfo_pop_up(self, context):
     layout = self.layout
     row = layout.row(align=False)
     row.operator(CTO_OT_Purge.bl_idname, icon='TRASH')
-    row.operator(CTO_OT_Space.bl_idname, icon='BLANK1', emboss=False)
+    row.operator(CTO_OT_Dummy.bl_idname, icon='BLANK1', emboss=False)
 
 
 def register():
-    bpy.utils.register_class(CTO_OT_Space)
+    bpy.utils.register_class(CTO_OT_Dummy)
     bpy.utils.register_class(CTO_OT_Purge)
     bpy.types.VIEW3D_PT_transform_orientations.append(extend_transfo_pop_up)
 
@@ -95,7 +98,7 @@ def register():
 def unregister():
     bpy.types.VIEW3D_PT_transform_orientations.remove(extend_transfo_pop_up)
     bpy.utils.unregister_class(CTO_OT_Purge)
-    bpy.utils.unregister_class(CTO_OT_Space)
+    bpy.utils.unregister_class(CTO_OT_Dummy)
 
 
 if __name__ == '__main__':
