@@ -1,7 +1,7 @@
 # CTO Purge
 This add-on adds a new button to Blender's Transform Orientation panel which empowers the user to purge all of her/his custom transform orientations with one button click.
 
-The latest version allows the user to configure a list of characters that if any is found in the Custom Transform Orientation name it will prevent that row to be purged by this addon. For customization, check the addon Preferences page in Blender.
+The latest release allows the user to configure a list of characters that if any is found in the Custom Transform Orientation name it will prevent that row to be purged by this addon.  For customization, check the addon Preferences page in Blender.
 
 ![CTO Purge](https://github.com/mmmrqs/media/blob/main/cto_purge.png)
 
